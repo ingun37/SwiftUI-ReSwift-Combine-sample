@@ -56,7 +56,7 @@ struct LandmarkDetail: View {
 struct LandmarkDetail_Previews: PreviewProvider {
     static var previews: some View {
         let userData = UserData()
-        return LandmarkDetail(landmark: AppStateManager.selectListener(initialValue: userData.landmarks[0], transform: {$0.landmarks[0]}), isFavorite: AppStateManager.selectListener(initialValue: true, transform: {_ in true}))
+        return LandmarkDetail(landmark: AppStateManager.selectObservableObject(initialValue: userData.landmarks[0], transform: {$0.landmarks[0]}), isFavorite: AppStateManager.selectObservableObject(initialValue: true, transform: {_ in true}))
             .environmentObject(userData)
     }
 }

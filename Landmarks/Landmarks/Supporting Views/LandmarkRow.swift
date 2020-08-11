@@ -30,7 +30,7 @@ struct LandmarkRow: View {
 struct LandmarkRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LandmarkRow(landmark: landmarkData[0], isFavorite: AppStateManager.selectListener(initialValue: true, transform: {_ in true}))
+            LandmarkRow(landmark: landmarkData[0], isFavorite: AppStateManager.selectObservableObject(initialValue: true, transform: {_ in true}))
         }
         .previewLayout(.fixed(width: 300, height: 70))
     }

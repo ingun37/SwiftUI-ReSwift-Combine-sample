@@ -28,10 +28,10 @@ struct LandmarkList: View {
                             NavigationLink(
                                 destination:
                                 LandmarkDetail(
-                                    landmark: AppStateManager.selectListener(initialValue: landmark, transform: {$0.landmarks.first{$0.id == landmark.id} ?? landmark}),
-                                    isFavorite: AppStateManager.selectListener(initialValue: false, transform: {$0.favorites.contains(landmark.id)}))
+                                    landmark: AppStateManager.selectObservableObject(initialValue: landmark, transform: {$0.landmarks.first{$0.id == landmark.id} ?? landmark}),
+                                    isFavorite: AppStateManager.selectObservableObject(initialValue: false, transform: {$0.favorites.contains(landmark.id)}))
                             ) {
-                                LandmarkRow(landmark: landmark, isFavorite: AppStateManager.selectListener(initialValue: false, transform: { (state) in
+                                LandmarkRow(landmark: landmark, isFavorite: AppStateManager.selectObservableObject(initialValue: false, transform: { (state) in
                                     state.favorites.contains(landmark.id)
                                 }))
                             }
@@ -47,7 +47,7 @@ struct LandmarkList: View {
 struct LandmarksList_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["iPhone SE", "iPhone XS Max"], id: \.self) { deviceName in
-            LandmarkList(state: AppStateManager.selectListener(initialValue: AppState(), transform: {$0}))
+            LandmarkList(state: AppStateManager.selectObservableObject(initialValue: AppState(), transform: {$0}))
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)
         }

@@ -48,7 +48,7 @@ public class AppStateManager {
     public static func dispatchAction(action:PublicAction) {
         store.dispatch(action)
     }
-    public static func selectListener<T>(initialValue:T, transform:@escaping (AppState)->T)->SelectionPublisher<T> {
+    public static func selectObservableObject<T>(initialValue:T, transform:@escaping (AppState)->T)->SelectionPublisher<T> {
         return SelectionPublisher(store: store, transform: transform, initialValue: initialValue)
     }
 }
