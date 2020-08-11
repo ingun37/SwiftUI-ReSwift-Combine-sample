@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LandmarkRow: View {
     var landmark: Landmark
-    @ObservedObject var isFavorite: ObservableState<Bool>
+    @ObservedObject var isFavorite: Listener<Bool>
     var body: some View {
         HStack {
             landmark.image
@@ -30,7 +30,7 @@ struct LandmarkRow: View {
 struct LandmarkRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LandmarkRow(landmark: landmarkData[0], isFavorite: AppStateManager.selectObservableObjectFor(initialValue: true, transform: {_ in true}))
+            LandmarkRow(landmark: landmarkData[0], isFavorite: AppStateManager.selectListener(initialValue: true, transform: {_ in true}))
         }
         .previewLayout(.fixed(width: 300, height: 70))
     }
