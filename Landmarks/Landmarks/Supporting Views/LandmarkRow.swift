@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LandmarkRow: View {
     var landmark: Landmark
-    @ObservedObject var isFavorite: Listener<Bool>
+    @ObservedObject var isFavorite: SelectionPublisher<Bool>
     var body: some View {
         HStack {
             landmark.image

@@ -48,8 +48,8 @@ public class AppStateManager {
     public static func dispatchAction(action:PublicAction) {
         store.dispatch(action)
     }
-    public static func selectListener<T>(initialValue:T, transform:@escaping (AppState)->T)->Listener<T> {
-        return Listener(store: store, transform: transform, initialValue: initialValue)
+    public static func selectListener<T>(initialValue:T, transform:@escaping (AppState)->T)->SelectionPublisher<T> {
+        return SelectionPublisher(store: store, transform: transform, initialValue: initialValue)
     }
 }
 
@@ -61,7 +61,7 @@ public enum PublicAction:Action {
     case ToggleFavorite(Int)
 }
 
-public class Listener<T>:StoreSubscriber, ObservableObject {
+public class SelectionPublisher<T>:StoreSubscriber, ObservableObject {
     @Published public var state:T
     init(store:Store<AppState>, transform:@escaping (AppState)->T, initialValue:T) {
         state = initialValue

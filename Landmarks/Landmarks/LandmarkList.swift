@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LandmarkList: View {
     @State var showFavoritesOnly = false
-    @ObservedObject var state: Listener<AppState>
+    @ObservedObject var state: SelectionPublisher<AppState>
     var body: some View {
         NavigationView {
             VStack {
@@ -26,7 +26,10 @@ struct LandmarkList: View {
                     ForEach(state.state.landmarks) { landmark in
                         if !self.showFavoritesOnly || landmark.isFavorite {
                             NavigationLink(
-                                destination: LandmarkDetail(landmark: AppStateManager.selectListener(initialValue: landmark, transform: {$0.landmarks.first{$0.id == landmark.id} ?? landmark}), isFavorite: AppStateManager.selectListener(initialValue: false, transform: {$0.favorites.contains(landmark.id)}))
+                                destination:
+                                LandmarkDetail(
+                                    landmark: AppStateManager.selectListener(initialValue: landmark, transform: {$0.landmarks.first{$0.id == landmark.id} ?? landmark}),
+                                    isFavorite: AppStateManager.selectListener(initialValue: false, transform: {$0.favorites.contains(landmark.id)}))
                             ) {
                                 LandmarkRow(landmark: landmark, isFavorite: AppStateManager.selectListener(initialValue: false, transform: { (state) in
                                     state.favorites.contains(landmark.id)
@@ -51,3 +54,4 @@ struct LandmarksList_Previews: PreviewProvider {
         .environmentObject(UserData())
     }
 }
+

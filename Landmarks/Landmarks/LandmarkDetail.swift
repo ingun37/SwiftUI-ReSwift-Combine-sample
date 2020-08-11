@@ -8,8 +8,8 @@ A view showing the details for a landmark.
 import SwiftUI
 
 struct LandmarkDetail: View {
-    @ObservedObject var landmark: Listener<Landmark>
-    @ObservedObject var isFavorite: Listener<Bool>
+    @ObservedObject var landmark: SelectionPublisher<Landmark>
+    @ObservedObject var isFavorite: SelectionPublisher<Bool>
     var body: some View {
         VStack {
             MapView(coordinate: landmark.state.locationCoordinate)
