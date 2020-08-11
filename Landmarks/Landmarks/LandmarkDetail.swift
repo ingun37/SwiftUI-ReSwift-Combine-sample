@@ -8,41 +8,48 @@ A view showing the details for a landmark.
 import SwiftUI
 
 struct LandmarkDetail: View {
-    @ObservedObject var landmark: ObservableState<Landmark>
-    @ObservedObject var isFavorite: ObservableState<Bool>
+    @EnvironmentObject var userData: UserData
+    var landmark: Landmark
+    
+    var landmarkIndex: Int {
+        userData.landmarks.firstIndex(where: { $0.id == landmark.id })!
+    }
+    
     var body: some View {
         VStack {
-            MapView(coordinate: landmark.state.locationCoordinate)
+            MapView(coordinate: landmark.locationCoordinate)
                 .edgesIgnoringSafeArea(.top)
                 .frame(height: 300)
             
-            CircleImage(image: landmark.state.image)
+            CircleImage(image: landmark.image)
                 .offset(x: 0, y: -130)
                 .padding(.bottom, -130)
             
             VStack(alignment: .leading) {
                 HStack {
-                    Text(landmark.state.name)
+                    Text(landmark.name)
                         .font(.title)
                     
                     Button(action: {
-                        AppStateManager.dispatchAction(action: .ToggleFavorite(self.landmark.state.id))
+                        self.userData.landmarks[self.landmarkIndex]
+                            .isFavorite.toggle()
                     }) {
-                        if self.isFavorite.state {
+                        if self.userData.landmarks[self.landmarkIndex]
+                            .isFavorite {
                             Image(systemName: "star.fill")
-                            .foregroundColor(Color.yellow)
+                                .foregroundColor(Color.yellow)
                         } else {
                             Image(systemName: "star")
-                            .foregroundColor(Color.gray)
+                                .foregroundColor(Color.gray)
                         }
                     }
                 }
                 
                 HStack(alignment: .top) {
-                    Text(landmark.state.park)
+                    Text(landmark.park)
                         .font(.subheadline)
                     Spacer()
-                    Text(landmark.state.state)
+                    Text(landmark.state)
                         .font(.subheadline)
                 }
             }
@@ -56,7 +63,7 @@ struct LandmarkDetail: View {
 struct LandmarkDetail_Previews: PreviewProvider {
     static var previews: some View {
         let userData = UserData()
-        return LandmarkDetail(landmark: AppStateManager.selectObservableObjectFor(initialValue: userData.landmarks[0], transform: {$0.landmarks[0]}), isFavorite: AppStateManager.selectObservableObjectFor(initialValue: true, transform: {_ in true}))
+        return LandmarkDetail(landmark: userData.landmarks[0])
             .environmentObject(userData)
     }
 }
